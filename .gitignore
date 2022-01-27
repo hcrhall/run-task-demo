@@ -31,3 +31,5 @@ override.tf.json
 infracost.json
 plan.json
 tfplan.plan
+.sentinel/*
+policies.json
