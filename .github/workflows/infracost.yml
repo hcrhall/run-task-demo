@@ -60,18 +60,19 @@ jobs:
         #   MY_ENV: ${{ secrets.MY_ENV }}
 
       - name: Run Sentinel
-        run: sentinel apply -config ./policies/sentinel.hcl -global breakdown="$(cat /tmp/infracost.json)" -trace #| tee /tmp/sentinel.out
+        run: sentinel apply -config ./policies/sentinel.hcl -global breakdown="$(cat /tmp/infracost.json)" -json | tee /tmp/policies.json
         working-directory: ${{ env.working-directory }}
 
       - name: Check Policies
         run: |
-          result=$(</tmp/sentinel.out)
-          if [ "$result" != "Pass - policy.policy" ]; then
-            echo -e "::error::Policy check failed:\n$result"
-            exit 1
-          else
-            echo "::info::Policy check passed."
-          fi
+          echo $(jq /tmp/policies.json)
+          # result=$(</tmp/sentinel_policy_check.json)
+          # if [ "$result" != "Pass - policy.policy" ]; then
+          #   echo -e "::error::Policy check failed:\n$result"
+          #   exit 1
+          # else
+          #   echo "::info::Policy check passed."
+          # fi
 
       # See https://github.com/infracost/actions/tree/master/comment
       # for other inputs such as target-type.

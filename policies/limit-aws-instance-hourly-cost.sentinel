@@ -1,0 +1,9 @@
+awsInstances = filter breakdown.projects[0].breakdown.resources as _, resource {
+	strings.split(resource.name, ".")[0] is "aws_instance"
+}
+
+main = rule {
+	all awsInstances as _, instance {
+		float(instance.hourlyCost) <= 2.00
+	}
+}
