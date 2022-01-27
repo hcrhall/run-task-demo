@@ -1,4 +1,4 @@
 policy "cost-management" {  
-    source = "policy.sentinel"  
+    source = "./cost-management.sentinel"  
     enforcement_level = "hard-mandatory"
 }
