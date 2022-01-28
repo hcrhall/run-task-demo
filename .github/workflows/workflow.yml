@@ -99,7 +99,7 @@ jobs:
     env:
       working-directory: .
 
-    name: Sentinel Policy Evaluation
+    name: HashiCorp Sentinel
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -111,16 +111,19 @@ jobs:
           path: tmp/artifacts
 
       - name: Run Sentinel
-        run: sentinel apply -config ./policies/sentinel.hcl -global breakdown="$(cat tmp/artifacts/infracost.json)" -json | tee tmp/artifacts/policies.json
+        run: |
+          sentinel apply -config ./policies/sentinel.hcl -global breakdown="$(cat ./infracost.json)" -json | \
+          jq -r '(["POLICY","PASSED"] | (., map(length*"-"))),(.policies[] | [ .policy, .result ]) | @tsv' | \
+          column -t
         working-directory: ${{ env.working-directory }}
 
-      - name: Check Policies
-        run: |
-          result=$(cat tmp/artifacts/policies.json | jq .result)
-          if [ "$result" != true ]; then
-            echo -e "::error::Policy check failed:\n$result"
-            exit 1
-          else
-            echo "::info::Policy check passed."
-          fi
+      # - name: Check Policies
+      #   run: |
+      #     result=$(cat tmp/artifacts/policies.json | jq .result)
+      #     if [ "$result" != true ]; then
+      #       echo -e "::error::Policy check failed:\n$result"
+      #       exit 1
+      #     else
+      #       echo "::info::Policy check passed."
+      #     fi
     
