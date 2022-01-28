@@ -112,7 +112,7 @@ jobs:
 
       - name: Run Sentinel
         run: |
-          sentinel apply -config ./policies/sentinel.hcl -global breakdown="$(cat ./infracost.json)" -json | \
+          sentinel apply -config ./policies/sentinel.hcl -global breakdown="$(cat tmp/artifacts/infracost.json)" -json | \
           jq -r '(["POLICY","PASSED"] | (., map(length*"-"))),(.policies[] | [ .policy, .result ]) | @tsv' | \
           column -t
         working-directory: ${{ env.working-directory }}
