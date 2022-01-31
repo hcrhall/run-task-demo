@@ -7,7 +7,7 @@ jobs:
     env:
       working-directory: .
 
-    name: Plan
+    name: Terraform Plan
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
