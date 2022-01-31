@@ -1,11 +1,37 @@
+import "eval"
 import "strings"
 
-awsInstances = filter breakdown.projects[0].breakdown.resources as _, resource {
+max_cost = 1.00
+
+doc = {
+	"id":        "AWS-CM-0.2",
+	"name":      "AWS instance hourly cost should not exceed $1.00 USD",
+	"reference": "https://www.example.com/cost-management/guidelines/",
+}
+
+aws_instances = filter cost.projects[0].breakdown.resources as _, resource {
 	strings.split(resource.name, ".")[0] is "aws_instance"
 }
 
+violations = filter aws_instances as _, instance {
+	float(instance.hourlyCost) >= max_cost
+}
+
+// Build a summary report
+summary = {
+	"id":        doc.id,
+	"name":      doc.name,
+	"reference": doc.reference,
+	"violations": map violations as _, violation {
+		{
+			"name":    strings.split(violation.name, ".")[1],
+			"address": violation.name,
+			"type":    "aws_instance",
+			"message": "Total monthly cost is $" + violation.hourlyCost + ".",
+		}
+	},
+}
+
 main = rule {
-	all awsInstances as _, instance {
-		float(instance.hourlyCost) <= 2.00
-	}
+	eval.summary(summary, "info")
 }

@@ -1,1 +1,32 @@
-main = float(breakdown.totalMonthlyCost) < 1500
+import "eval"
+
+max_cost = 1000.00
+
+doc = {
+	"id":        "AWS-CM-0.1",
+	"name":      "Terraform project cost should not exceed $1000.00 USD",
+	"reference": "https://www.example.com/cost-management/guidelines/",
+}
+
+violations = filter cost.projects as _, project {
+	float(project.breakdown.totalMonthlyCost) > max_cost
+}
+
+// Build a summary report
+summary = {
+	"id":        doc.id,
+	"name":      doc.name,
+	"reference": doc.reference,
+	"violations": map violations as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.metadata.vcsRepoUrl,
+			"type":    "Terraform Project",
+			"message": "Total monthly cost is $" + violation.breakdown.totalMonthlyCost + ".",
+		}
+	},
+}
+
+main = rule {
+	eval.summary(summary, "info")
+}
