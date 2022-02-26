@@ -33,3 +33,5 @@ plan.json
 tfplan.plan
 .sentinel/*
 policies.json
+remote.tf
+remote.bak
