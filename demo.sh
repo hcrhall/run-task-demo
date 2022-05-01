@@ -35,5 +35,4 @@ pe "git push origin ${BRANCH}"
 pe "gh pr create \\
 --title 'Add Tracing Configuration to Lambda Function' \\
 --body 'This PR sets the tracing configuration mode on the hello_world AWS lambda function to 'PassThrough'' \\
---label 'Enhancement' \\
---project 'Run Task Demo'"
+--label 'enhancement'"
