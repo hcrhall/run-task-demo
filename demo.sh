@@ -1,5 +1,7 @@
 #!/bin/bash
 
+BRANCH="Add_AWS_Lambda_Function_Tracing_Config_${RANDOM}"
+
 ########################
 # include the magic
 ########################
@@ -10,6 +12,9 @@ clear
 
 # Run Terraform Plan
 pe "terraform plan"
+
+# Create Branch
+pe "git checkout -b ${BRANCH}"
 
 # Change Configuration
 pe "code aws_lambda_function.tf"

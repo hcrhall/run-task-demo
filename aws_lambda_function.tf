@@ -7,8 +7,8 @@ resource "aws_lambda_function" "hello_world" {
   runtime       = "nodejs12.x"
   memory_size   = 1024
 
-  tracing_config {
-    mode = "PassThrough"
-  }
+  // tracing_config {
+  //   mode = "PassThrough"
+  // }
 
 }
