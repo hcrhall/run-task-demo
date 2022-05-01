@@ -21,7 +21,7 @@ pe "terraform plan"
 pe "git add ."
 
 # Commit the changes
-pe "git commit -m Update AWS Lambda tracing configuration"
+pe "git commit -m 'Update AWS Lambda tracing configuration'"
 
 # Push the changes
 pe "git push origin main"
