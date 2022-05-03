@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BRANCH="Add_AWS_Lambda_Function_Tracing_Config_${RANDOM}"
+BRANCH="Add_AWS_S3_Bucket_Config_${RANDOM}"
 
 ########################
 # include the magic
@@ -26,13 +26,13 @@ pe "terraform plan"
 pe "git add ."
 
 # Commit the changes
-pe "git commit -m 'Update AWS Lambda tracing configuration'"
+pe "git commit -m 'Update AWS S3 Bucket configuration'"
 
 # Push the changes
 pe "git push origin ${BRANCH}"
 
 # Create Pull Request
 pe "gh pr create \\
---title 'Add Tracing Configuration to Lambda Function' \\
---body 'This PR sets the tracing configuration mode on the hello_world AWS lambda function to 'PassThrough'' \\
+--title 'Add versioning config block to AWS S3 Bucket' \\
+--body 'This PR sets the versioning configuration on the AWS S3 bucket to 'true'' \\
 --label 'enhancement'"
