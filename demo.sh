@@ -17,7 +17,7 @@ pe "terraform plan"
 pe "git checkout -b ${BRANCH}"
 
 # Change Configuration
-pe "code aws_lambda_function.tf"
+pe "code main.tf"
 
 # Run Terraform Plan
 pe "terraform plan"
