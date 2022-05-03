@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region                      = var.region
+  region = var.region
   // skip_credentials_validation = true
   // skip_requesting_account_id  = true
   // access_key                  = "mock_access_key"
