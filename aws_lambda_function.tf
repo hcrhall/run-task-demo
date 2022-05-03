@@ -3,12 +3,13 @@
 resource "aws_lambda_function" "hello_world" {
   function_name = "hello_world"
   role          = "arn:aws:lambda:us-east-1:account-id:resource-id"
+  filename      = "function.zip"
   handler       = "exports.test"
   runtime       = "nodejs12.x"
   memory_size   = 1024
 
-  tracing_config {
-    mode = "PassThrough"
-  }
+  // tracing_config {
+  //   mode = "PassThrough"
+  // }
 
 }
