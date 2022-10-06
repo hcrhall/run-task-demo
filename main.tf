@@ -7,6 +7,13 @@ resource "aws_kms_key" "mykey" {
 resource "aws_s3_bucket" "bucket" {
   bucket = "run-task-demo-bucket"
 
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.mykey.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+
   //versioning {
   //  enabled    = true
   //}
@@ -23,15 +30,4 @@ resource "aws_s3_bucket_public_access_block" "public" {
   block_public_policy     = true
   restrict_public_buckets = true
   ignore_public_acls      = true
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "encrypt" {
-  bucket = aws_s3_bucket.bucket.id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = aws_kms_key.mykey.arn
-      sse_algorithm     = "aws:kms"
-    }
-  }
 }
