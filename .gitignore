@@ -35,3 +35,4 @@ tfplan.plan
 policies.json
 remote.tf
 remote.bak
+.DS_Store
