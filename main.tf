@@ -1,10 +1,23 @@
+locals {
+  environment = {
+    staging = {
+      bucket_name   = "staging-bucket"
+      acl = "public-read"
+    }
+    production = {
+      bucket_name   = "production-bucket"
+      acl = "private"
+    }
+  }
+}
+
 # resource "aws_kms_key" "mykey" {
 #   description             = "This key is used to encrypt bucket objects"
 #   deletion_window_in_days = 10
 # }
 
 // This configuration will genenrate AWS resource for demonstration purposes
-resource "aws_s3_bucket" "bucket" {
+resource "aws_s3_bucket" "static_bucket" {
   bucket = "run-task-demo-bucket"
   acl    = "public-read"
 
@@ -24,6 +37,30 @@ resource "aws_s3_bucket" "bucket" {
   tags = {
     Name        = "Public"
     Environment = "Production"
+  }
+}
+
+resource "aws_s3_bucket" "dynamic_bucket" {
+  count    = (var.environment == "production") ? 1 : 0
+  bucket = local.environment[var.environment].bucket_name
+  acl    = local.environment[var.environment].acl
+
+  # server_side_encryption_configuration {
+  #   rule {
+  #     apply_server_side_encryption_by_default {
+  #       kms_master_key_id = aws_kms_key.mykey.arn
+  #       sse_algorithm     = "aws:kms"
+  #     }
+  #   }
+  # }
+
+  # versioning {
+  #   enabled = true
+  # }
+
+  tags = {
+    Name        = local.environment[var.environment].acl
+    Environment = var.environment
   }
 }
 
