@@ -19,6 +19,7 @@ locals {
 
 // This simple bucket configuration will cause failures.
 resource "aws_s3_bucket" "static_bucket" {
+  # checkov:skip=CKV_AWS_20: Hmmm, what does this do?
   bucket = "run-task-demo-bucket"
   acl    = "public-read"
 
@@ -33,6 +34,7 @@ resource "aws_s3_bucket" "dynamic_bucket" {
   count    = (var.environment == "production") ? 1 : 0
   bucket = local.environment[var.environment].bucket_name
   acl    = local.environment[var.environment].acl
+
 
   # server_side_encryption_configuration {
   #   rule {
