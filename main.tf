@@ -1,3 +1,4 @@
+# LOCALS
 locals {
   environment = {
     staging = {
