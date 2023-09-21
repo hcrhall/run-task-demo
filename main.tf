@@ -19,7 +19,6 @@ locals {
 
 // This simple bucket configuration will cause failures.
 resource "aws_s3_bucket" "static_bucket" {
-  # checkov:skip=CKV_AWS_20: Hmmm, what does this do?
   bucket = "run-task-demo-bucket"
   acl    = "public-read"
 
