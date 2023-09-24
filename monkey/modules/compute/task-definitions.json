@@ -1,6 +1,6 @@
 [
   {
-    "name": "km-frontend",
+    "name": "foo-frontend",
     "image": "nginx",
     "cpu": 256,
     "memory": 512,

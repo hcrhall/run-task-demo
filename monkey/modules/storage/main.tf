@@ -65,7 +65,7 @@ resource "aws_db_instance" "km_db" {
 
 resource "aws_ssm_parameter" "km_ssm_db_host" {
   name        = "/km-${var.environment}/DB_HOST"
-  description = "Kai Monkey Database"
+  description = "Foo Monkey Database"
   type        = "SecureString"
   value       = aws_db_instance.km_db.endpoint
 
@@ -74,7 +74,7 @@ resource "aws_ssm_parameter" "km_ssm_db_host" {
 
 resource "aws_ssm_parameter" "km_ssm_db_password" {
   name        = "/km-${var.environment}/DB_PASSWORD"
-  description = "Kai Monkey Database Password"
+  description = "Foo Monkey Database Password"
   type        = "SecureString"
   value       = aws_db_instance.km_db.password
 
@@ -83,7 +83,7 @@ resource "aws_ssm_parameter" "km_ssm_db_password" {
 
 resource "aws_ssm_parameter" "km_ssm_db_user" {
   name        = "/km-${var.environment}/DB_USER"
-  description = "Kai Monkey Database Username"
+  description = "Foo Monkey Database Username"
   type        = "SecureString"
   value       = aws_db_instance.km_db.username
 
@@ -92,7 +92,7 @@ resource "aws_ssm_parameter" "km_ssm_db_user" {
 
 resource "aws_ssm_parameter" "km_ssm_db_name" {
   name        = "/km-${var.environment}/DB_NAME"
-  description = "Kai Monkey Database Name"
+  description = "Foo Monkey Database Name"
   type        = "SecureString"
   value       = aws_db_instance.km_db.name
 
@@ -103,10 +103,14 @@ resource "aws_ssm_parameter" "km_ssm_db_name" {
 
 resource "aws_s3_bucket" "km_blob_storage" {
   bucket = "km-blob-storage-${var.environment}"
-  acl    = "private"
   tags = merge(var.default_tags, {
     name = "km_blob_storage_${var.environment}"
   })
+}
+
+resource "aws_s3_bucket_acl" "km_blob_storage_acl" {
+  bucket = aws_s3_bucket.km_blob_storage.id
+  acl    = "private"
 }
 
 resource "aws_s3_bucket" "km_public_blob" {
