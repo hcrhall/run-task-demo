@@ -1,12 +1,39 @@
+// Local variables are used to define the bucket name and ACL based on the environment.
+locals {
+  environment = {
+    staging = {
+      bucket_name   = "staging-bucket"
+      acl = "public-read"
+    }
+    production = {
+      bucket_name   = "production-bucket"
+      acl = "private"
+    }
+  }
+}
+
 # resource "aws_kms_key" "mykey" {
 #   description             = "This key is used to encrypt bucket objects"
 #   deletion_window_in_days = 10
 # }
 
-// This configuration will genenrate AWS resource for demonstration purposes
-resource "aws_s3_bucket" "bucket" {
+// This simple bucket configuration will cause failures.
+resource "aws_s3_bucket" "static_bucket" {
   bucket = "run-task-demo-bucket"
   acl    = "public-read"
+
+  tags = {
+    Name        = "Public"
+    Environment = "Production"
+  }
+}
+
+// This dynamic bucket configuration will cause failures.
+resource "aws_s3_bucket" "dynamic_bucket" {
+  count    = (var.environment == "production") ? 1 : 0
+  bucket = local.environment[var.environment].bucket_name
+  acl    = local.environment[var.environment].acl
+
 
   # server_side_encryption_configuration {
   #   rule {
@@ -22,8 +49,8 @@ resource "aws_s3_bucket" "bucket" {
   # }
 
   tags = {
-    Name        = "Public"
-    Environment = "Production"
+    Name        = local.environment[var.environment].acl
+    Environment = var.environment
   }
 }
 
