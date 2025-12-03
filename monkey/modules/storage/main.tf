@@ -94,7 +94,7 @@ resource "aws_ssm_parameter" "km_ssm_db_name" {
   name        = "/km-${var.environment}/DB_NAME"
   description = "Foo Monkey Database Name"
   type        = "SecureString"
-  value       = aws_db_instance.km_db.name
+  value       = aws_db_instance.km_db.db_name
 
   tags = merge(var.default_tags, {
     environment = "${var.environment}"
