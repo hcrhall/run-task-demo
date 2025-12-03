@@ -54,7 +54,7 @@ resource "aws_subnet" "km_public_subnet" {
 # Create a NAT gateway with an EIP for each private subnet to get internet connectivity
 resource "aws_eip" "km_eip" {
   count      = var.az_count
-  vpc        = true
+  domain     = "vpc"
   depends_on = [aws_internet_gateway.km_ig]
 
   tags = merge(var.default_tags, {
